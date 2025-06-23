@@ -1,132 +1,9 @@
-;; ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
-
-;; ;; Place your private configuration here! Remember, you do not need to run 'doom
-;; ;; sync' after modifying this file!
-
-
-;; ;; Some functionality uses this to identify you, e.g. GPG configuration, email
-;; ;; clients, file templates and snippets. It is optional.
-;; ;; (setq user-full-name "John Doe"
-;; ;;       user-mail-address "john@doe.com")
-
-;; ;; Doom exposes five (optional) variables for controlling fonts in Doom:
-;; ;;
-;; ;; - `doom-font' -- the primary font to use
-;; ;; - `doom-variable-pitch-font' -- a non-monospace font (where applicable)
-;; ;; - `doom-big-font' -- used for `doom-big-font-mode'; use this for
-;; ;;   presentations or streaming.
-;; ;; - `doom-symbol-font' -- for symbols
-;; ;; - `doom-serif-font' -- for the `fixed-pitch-serif' face
-;; ;;
-;; ;; See 'C-h v doom-font' for documentation and more examples of what they
-;; ;; accept. For example:
-;; ;;
-;; ;;(setq doom-font (font-spec :family "Fira Code" :size 12 :weight 'semi-light)
-;; ;;      doom-variable-pitch-font (font-spec :family "Fira Sans" :size 13))
-;; ;;
-;; ;; If you or Emacs can't find your font, use 'M-x describe-font' to look them
-;; ;; up, `M-x eval-region' to execute elisp code, and 'M-x doom/reload-font' to
-;; ;; refresh your font settings. If Emacs still can't find your font, it likely
-;; ;; wasn't installed correctly. Font issues are rarely Doom issues!
-
-;; ;; There are two ways to load a theme. Both assume the theme is installed and
-;; ;; available. You can either set `doom-theme' or manually load a theme with the
-;; ;; `load-theme' function. This is the default:
-;; (setq doom-theme 'doom-one)
-
-;; ;; This determines the style of line numbers in effect. If set to `nil', line
-;; ;; numbers are disabled. For relative line numbers, set this to `relative'.
-;; (setq display-line-numbers-type 'relative)
-
-;; ;; If you use `org' and don't want your org files in the default location below,
-;; ;; change `org-directory'. It must be set before org loads!
-;; (setq org-directory "~/org/")
-
-;; (after! flycheck
-;;   (setq flycheck-check-syntax-automatically '(save idle-change mode-enabled)))
-
-;; ;; Whenever you reconfigure a package, make sure to wrap your config in an
-;; ;; `after!' block, otherwise Doom's defaults may override your settings. E.g.
-;; ;;
-;; ;;   (after! PACKAGE
-;;     (setq x y))
-;;
-;; The exceptions to this rule:
-;;
-;;   - Setting file/directory variables (like `org-directory')
-;;   - Setting variables which explicitly tell you to set them before their
-;;     package is loaded (see 'C-h v VARIABLE' to look up their documentation).
-;;   - Setting doom variables (which start with 'doom-' or '+').
-;;
-;; Here are some additional functions/macros that will help you configure Doom.
-;;
-;; - `load!' for loading external *.el files relative to this one
-;; - `use-package!' for configuring packages
-;; - `after!' for running code after a package has loaded
-;; - `add-load-path!' for adding directories to the `load-path', relative to
-;;   this file. Emacs searches the `load-path' when you load packages with
-;;   `require' or `use-package'.
-;; - `map!' for binding new keys
-;;
-;; To get information about any of these functions/macros, move the cursor over
-;; the highlighted symbol at press 'K' (non-evil users must press 'C-c c k').
-;; This will open documentation for it, including demos of how they are used.
-;; Alternatively, use `C-h o' to look up a symbol (functions, variables, faces,
-;; etc).
-;;
-;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
-;; they are implemented.
-;; In ~/.doom.d/config.el
-;;
-;; (after! evil-escape
-;;   (setq evil-escape-key-sequence "jk")
-;;   (setq evil-esc-delay 0.2)) ; Time (in seconds) to wait between j and k
-
-;; ;; Configure company for faster completion
-;; (after! evil
-;;   (setq evil-clipboard t))
-
-;; (after! company
-;;   (setq company-idle-delay 0.3  ; Faster completion popup
-;;         company-minimum-prefix-length 1)
-;;   (define-key company-active-map (kbd "C-y") #'company-complete-selection))
-
-;; ;; Configure lsp-ui for inline diagnostics
-;; (after! lsp-ui
-;;   (setq lsp-ui-sideline-enable t
-;;         lsp-ui-sideline-show-diagnostics t
-;;         lsp-ui-sideline-update-mode 'line))   ; Show diagnostics on the current line
-
-;; ;; Configure lsp-mode for better responsiveness
-;; (after! lsp-mode
-;;   (setq lsp-idle-delay 0.5
-;;         lsp-auto-guess-root t))
-
-;; ;; Configure lsp-go for Go development
-;; (after! lsp-go
-;;   (setq lsp-gopls-staticcheck t)  ; Enable staticcheck for deeper analysis
-;;   (setq lsp-gopls-use-placeholders t)  ; Optional: for snippet-like behavior
-;;   (setq lsp-gopls-complete-unimported t)  ; Suggest and auto-import unimported packages
-;;   (setq lsp-gopls-hover-kind "FullDocumentation")  ; Optional: richer hover info
-;;   (setq lsp-gopls-env '("GOPLS_LOGFILE=/tmp/gopls.log"))
-;;   (setq lsp-gopls-analyses '((unusedparams . t)))
-;;   (add-hook 'go-mode-hook
-;;             (lambda ()
-;;               (add-hook 'before-save-hook #'lsp-organize-imports nil t)))
-;;   (map! :map go-mode-map
-;;         :localleader
-;;         "i" #'lsp-go-imports))  ; Bind a key to trigger import organization
-;; (after! go-mode
-;;   (add-hook 'go-mode-hook #'lsp))
-
-
-
-;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
-;; Ensure dashboard shows up in new frames
+;; Dashboard configuration
 (setq +doom-dashboard-functions
       '(doom-dashboard-widget-banner
         doom-dashboard-widget-shortmenu
         doom-dashboard-widget-loaded))
+(global-set-key (kbd "C-c d") #'+doom-dashboard/open)
 
 ;; Show dashboard in emacsclient frames
 (setq initial-buffer-choice (lambda () (get-buffer-create "*doom*")))
@@ -218,3 +95,192 @@
         lsp-gopls-hover-kind "FullDocumentation"
         lsp-gopls-analyses '((unusedparams . t)
                              (shadow . t))))
+
+;; ORG MODE CONFIGURATION
+;; First, set up org-agenda-files properly
+(after! org
+  ;; Ensure org-agenda-files is set correctly
+  (setq org-agenda-files '("~/org/meetings.org"))
+
+  ;; Create the files if they don't exist
+  (dolist (file org-agenda-files)
+    (unless (file-exists-p file)
+      (with-temp-buffer
+        (write-file file))))
+
+  ;; Set up org-capture-templates
+  (setq org-capture-templates
+        '(("m" "Meeting Notes" entry
+           (file+headline "~/org/meetings.org" "Meetings")
+           "* %^{Meeting Title} :meeting:\n:PROPERTIES:\n:DATE: %U\n:ATTENDEES: %^{Attendees}\n:END:\n** Agenda\n- %?\n** Notes\n- \n** Decisions\n- \n** Action Items\n*** TODO "
+           :empty-lines 1)
+          ("t" "Todo" entry
+           (file+headline "~/org/inbox.org" "Tasks")
+           "* TODO %?\n  %U\n  %a")
+          ("n" "Note" entry
+           (file+headline "~/org/notes.org" "Notes")
+           "* %?\nEntered on %U\n  %a")
+          ("j" "Journal" entry
+           (file+olp+datetree "~/org/journal.org")
+           "* %<%H:%M> %?\nEntered on %U\n"
+           :empty-lines 1)
+          ))
+
+  ;; Remove the hook that might interfere with org-capture
+  (remove-hook 'org-capture-mode-hook #'yas-minor-mode))
+
+;; Org-roam configuration
+(use-package! org-roam
+  :after org
+  :custom
+  (org-roam-directory (file-truename "~/org/zettel"))
+  (org-roam-completion-everywhere t)
+  :config
+  (org-roam-db-autosync-mode)
+
+  (setq org-roam-capture-templates
+        '(("d" "default" plain
+           "#+title: ${title}\n\n* Notes\n\n%?\n\n* Backlinks\n\n"
+           :target (file+head "zettel/%<%Y%m%d%H%M%S>-${slug}.org"
+                              "#+title: ${title}\n")
+           :unnarrowed t))))
+
+;; Spell checking configuration
+(setq ispell-program-name "hunspell")
+(setq ispell-dictionary "en_GB") ;; Use English (UK)
+(setq ispell-local-dictionary "en_GB")
+(setq ispell-local-dictionary-alist
+      '(("en_GB" "[[:alpha:]]" "[^[:alpha:]]" "[']" t ("-d" "en_GB") nil utf-8)))
+;; WEB DEVELOPMENT CONFIGURATION
+;; Add this section to your ~/.doom.d/config.el file
+
+;; Web-mode configuration
+;; Company configuration for web modes
+(after! web-mode
+  (set-company-backend! 'web-mode
+    '(company-web-html company-css company-files company-dabbrev))
+
+  ;; Web-mode specific settings
+  (setq web-mode-markup-indent-offset 2
+        web-mode-css-indent-offset 2
+        web-mode-code-indent-offset 2
+        web-mode-enable-auto-pairing t
+        web-mode-enable-auto-closing t
+        web-mode-enable-current-element-highlight t
+        web-mode-enable-auto-indentation t))
+(after! html-mode
+  (set-company-backend! 'html-mode
+    '(company-web-html company-files company-dabbrev)))
+
+;; CSS mode configuration
+(after! css-mode
+  (set-company-backend! 'css-mode
+    '(company-css company-files company-dabbrev)))
+
+;; JavaScript/TypeScript configuration
+(after! js2-mode
+  (setq js2-basic-offset 2
+        js-indent-level 2))
+
+(after! typescript-mode
+  (setq typescript-indent-level 2))
+
+;; Format on save for web development files
+(add-hook! (html-mode web-mode css-mode js-mode js2-mode typescript-mode json-mode)
+  (format-all-mode))
+
+;; Enable emmet mode for HTML expansion (e.g., div.class>p*3)
+(add-hook! (html-mode web-mode) #'emmet-mode)
+
+;; LSP configuration for web development
+(after! lsp-mode
+  ;; Enable LSP for web development modes
+  (add-hook 'html-mode-hook #'lsp-deferred)
+  (add-hook 'css-mode-hook #'lsp-deferred)
+  (add-hook 'js-mode-hook #'lsp-deferred)
+  (add-hook 'js2-mode-hook #'lsp-deferred)
+  (add-hook 'typescript-mode-hook #'lsp-deferred)
+  (add-hook 'web-mode-hook #'lsp-deferred))
+
+;; HTMX Configuration (built-in, no external package needed)
+(defvar htmx-attributes
+  '("hx-get" "hx-post" "hx-put" "hx-patch" "hx-delete"
+    "hx-target" "hx-trigger" "hx-swap" "hx-select"
+    "hx-include" "hx-push-url" "hx-vals" "hx-confirm"
+    "hx-disable" "hx-boost" "hx-indicator" "hx-params"
+    "hx-encoding" "hx-ext" "hx-headers" "hx-history"
+    "hx-history-elt" "hx-request" "hx-sync" "hx-validate"
+    "hx-on" "hx-disinherit" "hx-preserve")
+  "List of HTMX attributes for completion.")
+
+;; HTMX syntax highlighting
+(defun htmx-setup-highlighting ()
+  "Add HTMX attribute highlighting to HTML modes."
+  (font-lock-add-keywords
+   nil
+   '(("\\bhx-[a-z-]+\\b" . font-lock-keyword-face))))
+
+(add-hook 'html-mode-hook #'htmx-setup-highlighting)
+(add-hook 'web-mode-hook #'htmx-setup-highlighting)
+
+;; HTMX snippets using yasnippet
+(after! yasnippet
+  (defun add-htmx-snippets ()
+    "Add HTMX snippets to yasnippet."
+    (yas-define-snippets 'html-mode
+                         '(("hxget" "hx-get=\"$1\" hx-target=\"$2\"$0" "HTMX GET request")
+                           ("hxpost" "hx-post=\"$1\" hx-target=\"$2\"$0" "HTMX POST request")
+                           ("hxtrigger" "hx-trigger=\"$1\"$0" "HTMX trigger")
+                           ("hxswap" "hx-swap=\"$1\"$0" "HTMX swap")
+                           ("hxtarget" "hx-target=\"$1\"$0" "HTMX target")
+                           ("hxboost" "hx-boost=\"true\"$0" "HTMX boost")
+                           ("hxconfirm" "hx-confirm=\"$1\"$0" "HTMX confirm")
+                           ("hxindicator" "hx-indicator=\"$1\"$0" "HTMX indicator")
+                           ("hxform" "<form hx-post=\"$1\" hx-target=\"$2\">\n  $0\n</form>" "HTMX form")))
+
+    (yas-define-snippets 'web-mode
+                         '(("hxget" "hx-get=\"$1\" hx-target=\"$2\"$0" "HTMX GET request")
+                           ("hxpost" "hx-post=\"$1\" hx-target=\"$2\"$0" "HTMX POST request")
+                           ("hxtrigger" "hx-trigger=\"$1\"$0" "HTMX trigger")
+                           ("hxswap" "hx-swap=\"$1\"$0" "HTMX swap")
+                           ("hxtarget" "hx-target=\"$1\"$0" "HTMX target")
+                           ("hxboost" "hx-boost=\"true\"$0" "HTMX boost")
+                           ("hxconfirm" "hx-confirm=\"$1\"$0" "HTMX confirm")
+                           ("hxindicator" "hx-indicator=\"$1\"$0" "HTMX indicator")
+                           ("hxform" "<form hx-post=\"$1\" hx-target=\"$2\">\n  $0\n</form>" "HTMX form"))))
+
+  (add-hook 'html-mode-hook #'add-htmx-snippets)
+  (add-hook 'web-mode-hook #'add-htmx-snippets))
+
+;; Web-mode file associations
+(add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.htm\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.vue\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.jsx\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.tsx\\'" . web-mode))
+
+;; Key bindings for web development
+(map! :after web-mode
+      :map web-mode-map
+      :localleader
+      "f" #'format-all-buffer
+      "=" #'web-mode-buffer-indent
+      "e" #'emmet-expand-line
+      (:prefix ("h" . "htmx")
+               "g" (lambda () (interactive) (insert "hx-get=\"\" hx-target=\"\"") (backward-char 15))
+               "p" (lambda () (interactive) (insert "hx-post=\"\" hx-target=\"\"") (backward-char 16))
+               "t" (lambda () (interactive) (insert "hx-trigger=\"\"") (backward-char 1))
+               "s" (lambda () (interactive) (insert "hx-swap=\"\"") (backward-char 1))
+               "T" (lambda () (interactive) (insert "hx-target=\"\"") (backward-char 1))))
+
+(map! :after html-mode
+      :map html-mode-map
+      :localleader
+      "f" #'format-all-buffer
+      "e" #'emmet-expand-line
+      (:prefix ("h" . "htmx")
+               "g" (lambda () (interactive) (insert "hx-get=\"\" hx-target=\"\"") (backward-char 15))
+               "p" (lambda () (interactive) (insert "hx-post=\"\" hx-target=\"\"") (backward-char 16))
+               "t" (lambda () (interactive) (insert "hx-trigger=\"\"") (backward-char 1))
+               "s" (lambda () (interactive) (insert "hx-swap=\"\"") (backward-char 1))
+               "T" (lambda () (interactive) (insert "hx-target=\"\"") (backward-char 1))))

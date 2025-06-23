@@ -48,3 +48,5 @@
 ;; ...Or *all* packages (NOT RECOMMENDED; will likely break things)
 ;; (unpin! t)
 (package! go-mode)
+(unpin! org-roam)
+(package! org-roam-ui)
