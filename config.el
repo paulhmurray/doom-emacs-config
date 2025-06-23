@@ -151,107 +151,8 @@
 (setq ispell-local-dictionary "en_GB")
 (setq ispell-local-dictionary-alist
       '(("en_GB" "[[:alpha:]]" "[^[:alpha:]]" "[']" t ("-d" "en_GB") nil utf-8)))
-;; WEB DEVELOPMENT CONFIGURATION
-;; Add this section to your ~/.doom.d/config.el file
 
-;; Web-mode configuration
-;; Company configuration for web modes
-(after! web-mode
-  (set-company-backend! 'web-mode
-    '(company-web-html company-css company-files company-dabbrev))
-
-  ;; Web-mode specific settings
-  (setq web-mode-markup-indent-offset 2
-        web-mode-css-indent-offset 2
-        web-mode-code-indent-offset 2
-        web-mode-enable-auto-pairing t
-        web-mode-enable-auto-closing t
-        web-mode-enable-current-element-highlight t
-        web-mode-enable-auto-indentation t))
-(after! html-mode
-  (set-company-backend! 'html-mode
-    '(company-web-html company-files company-dabbrev)))
-
-;; CSS mode configuration
-(after! css-mode
-  (set-company-backend! 'css-mode
-    '(company-css company-files company-dabbrev)))
-
-;; JavaScript/TypeScript configuration
-(after! js2-mode
-  (setq js2-basic-offset 2
-        js-indent-level 2))
-
-(after! typescript-mode
-  (setq typescript-indent-level 2))
-
-;; Format on save for web development files
-(add-hook! (html-mode web-mode css-mode js-mode js2-mode typescript-mode json-mode)
-  (format-all-mode))
-
-;; Enable emmet mode for HTML expansion (e.g., div.class>p*3)
-(add-hook! (html-mode web-mode) #'emmet-mode)
-
-;; LSP configuration for web development
-(after! lsp-mode
-  ;; Enable LSP for web development modes
-  (add-hook 'html-mode-hook #'lsp-deferred)
-  (add-hook 'css-mode-hook #'lsp-deferred)
-  (add-hook 'js-mode-hook #'lsp-deferred)
-  (add-hook 'js2-mode-hook #'lsp-deferred)
-  (add-hook 'typescript-mode-hook #'lsp-deferred)
-  (add-hook 'web-mode-hook #'lsp-deferred))
-
-;; HTMX Configuration (built-in, no external package needed)
-(defvar htmx-attributes
-  '("hx-get" "hx-post" "hx-put" "hx-patch" "hx-delete"
-    "hx-target" "hx-trigger" "hx-swap" "hx-select"
-    "hx-include" "hx-push-url" "hx-vals" "hx-confirm"
-    "hx-disable" "hx-boost" "hx-indicator" "hx-params"
-    "hx-encoding" "hx-ext" "hx-headers" "hx-history"
-    "hx-history-elt" "hx-request" "hx-sync" "hx-validate"
-    "hx-on" "hx-disinherit" "hx-preserve")
-  "List of HTMX attributes for completion.")
-
-;; HTMX syntax highlighting
-(defun htmx-setup-highlighting ()
-  "Add HTMX attribute highlighting to HTML modes."
-  (font-lock-add-keywords
-   nil
-   '(("\\bhx-[a-z-]+\\b" . font-lock-keyword-face))))
-
-(add-hook 'html-mode-hook #'htmx-setup-highlighting)
-(add-hook 'web-mode-hook #'htmx-setup-highlighting)
-
-;; HTMX snippets using yasnippet
-(after! yasnippet
-  (defun add-htmx-snippets ()
-    "Add HTMX snippets to yasnippet."
-    (yas-define-snippets 'html-mode
-                         '(("hxget" "hx-get=\"$1\" hx-target=\"$2\"$0" "HTMX GET request")
-                           ("hxpost" "hx-post=\"$1\" hx-target=\"$2\"$0" "HTMX POST request")
-                           ("hxtrigger" "hx-trigger=\"$1\"$0" "HTMX trigger")
-                           ("hxswap" "hx-swap=\"$1\"$0" "HTMX swap")
-                           ("hxtarget" "hx-target=\"$1\"$0" "HTMX target")
-                           ("hxboost" "hx-boost=\"true\"$0" "HTMX boost")
-                           ("hxconfirm" "hx-confirm=\"$1\"$0" "HTMX confirm")
-                           ("hxindicator" "hx-indicator=\"$1\"$0" "HTMX indicator")
-                           ("hxform" "<form hx-post=\"$1\" hx-target=\"$2\">\n  $0\n</form>" "HTMX form")))
-
-    (yas-define-snippets 'web-mode
-                         '(("hxget" "hx-get=\"$1\" hx-target=\"$2\"$0" "HTMX GET request")
-                           ("hxpost" "hx-post=\"$1\" hx-target=\"$2\"$0" "HTMX POST request")
-                           ("hxtrigger" "hx-trigger=\"$1\"$0" "HTMX trigger")
-                           ("hxswap" "hx-swap=\"$1\"$0" "HTMX swap")
-                           ("hxtarget" "hx-target=\"$1\"$0" "HTMX target")
-                           ("hxboost" "hx-boost=\"true\"$0" "HTMX boost")
-                           ("hxconfirm" "hx-confirm=\"$1\"$0" "HTMX confirm")
-                           ("hxindicator" "hx-indicator=\"$1\"$0" "HTMX indicator")
-                           ("hxform" "<form hx-post=\"$1\" hx-target=\"$2\">\n  $0\n</form>" "HTMX form"))))
-
-  (add-hook 'html-mode-hook #'add-htmx-snippets)
-  (add-hook 'web-mode-hook #'add-htmx-snippets))
-
+;; WEB DEVELOPMENT CONFIGURATION - FIXED
 ;; Web-mode file associations
 (add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.htm\\'" . web-mode))
@@ -259,28 +160,47 @@
 (add-to-list 'auto-mode-alist '("\\.jsx\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.tsx\\'" . web-mode))
 
+;; Web-mode configuration
+(after! web-mode
+  ;; Basic settings
+  (setq web-mode-markup-indent-offset 2
+        web-mode-css-indent-offset 2
+        web-mode-code-indent-offset 2
+        web-mode-enable-auto-pairing t
+        web-mode-enable-auto-closing t
+        web-mode-enable-current-element-highlight t
+        web-mode-enable-auto-indentation t)
+
+  ;; Enable LSP for web-mode (this is key!)
+  (add-hook 'web-mode-hook #'lsp-deferred)
+
+  ;; Company backend for web-mode
+  (set-company-backend! 'web-mode
+    '(company-capf company-web-html company-css company-files company-dabbrev)))
+
+;; CSS mode configuration
+(after! css-mode
+  (add-hook 'css-mode-hook #'lsp-deferred)
+  (set-company-backend! 'css-mode
+    '(company-capf company-css company-files company-dabbrev)))
+
+;; JavaScript/TypeScript configuration
+(after! js2-mode
+  (setq js2-basic-offset 2
+        js-indent-level 2)
+  (add-hook 'js2-mode-hook #'lsp-deferred))
+
+(after! typescript-mode
+  (setq typescript-indent-level 2)
+  (add-hook 'typescript-mode-hook #'lsp-deferred))
+
+;; Enable emmet mode for HTML expansion
+(add-hook 'web-mode-hook #'emmet-mode)
+
 ;; Key bindings for web development
 (map! :after web-mode
       :map web-mode-map
       :localleader
       "f" #'format-all-buffer
       "=" #'web-mode-buffer-indent
-      "e" #'emmet-expand-line
-      (:prefix ("h" . "htmx")
-               "g" (lambda () (interactive) (insert "hx-get=\"\" hx-target=\"\"") (backward-char 15))
-               "p" (lambda () (interactive) (insert "hx-post=\"\" hx-target=\"\"") (backward-char 16))
-               "t" (lambda () (interactive) (insert "hx-trigger=\"\"") (backward-char 1))
-               "s" (lambda () (interactive) (insert "hx-swap=\"\"") (backward-char 1))
-               "T" (lambda () (interactive) (insert "hx-target=\"\"") (backward-char 1))))
-
-(map! :after html-mode
-      :map html-mode-map
-      :localleader
-      "f" #'format-all-buffer
-      "e" #'emmet-expand-line
-      (:prefix ("h" . "htmx")
-               "g" (lambda () (interactive) (insert "hx-get=\"\" hx-target=\"\"") (backward-char 15))
-               "p" (lambda () (interactive) (insert "hx-post=\"\" hx-target=\"\"") (backward-char 16))
-               "t" (lambda () (interactive) (insert "hx-trigger=\"\"") (backward-char 1))
-               "s" (lambda () (interactive) (insert "hx-swap=\"\"") (backward-char 1))
-               "T" (lambda () (interactive) (insert "hx-target=\"\"") (backward-char 1))))
+      "e" #'emmet-expand-line)
